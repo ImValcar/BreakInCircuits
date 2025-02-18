@@ -1,6 +1,5 @@
-# BreakingCircuits
+# BreakingCircuits - FLASHEAR MICROPYTHON EN ESP32(s2 mini)****
 
-# FLASHEAR MICROPYTHON EN ESP32(s2 mini)
 
 ## REQUISITOS DE INSTALACIÓN 📖
 
