@@ -34,11 +34,12 @@ D:\ESP32> pip install esptool
 	Mantén presionado el botón BOOT y mientras presionas el BOOT, pulsa y suelta el otro botón RESET y por último, suelta el botón BOOT.
 
 3º Nos dirigimos a administrador de dispositivos, comprobamos que aparece el esp32 en el puerto COM
-	- Si aparece en Otros dispositivos con un triángulo amarillo: 
-		-  Identifica si es placa china o real de silicon labs
-		- Descarga el CH340 si es china [https://www.wch-ic.com/search?q=CH340&t=downloads]
-		- Descarga el CP210 si es de silabs [https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads]
-		- Pulsa en administración de dispositivos y actualiza el controlador del esp32 y selecciona el que te hayas instalado.	
+
+	Si aparece en Otros dispositivos con un triángulo amarillo: 
+		- 1º Identifica si es placa china o real de silicon labs
+		- 2º a)  Descarga el CH340 si es china [https://www.wch-ic.com/search?q=CH340&t=downloads]
+		- 2º b) Descarga el CP210 si es de silabs [https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads]
+		- 3º Pulsa en administración de dispositivos y actualiza el controlador del esp32 y selecciona el que te hayas instalado.	
 
 4º Confirmamos que tenemos esptool en la terminal utilizando:
 	
@@ -102,13 +103,18 @@ Leaving...
 
 7º Una vez instalado, reiniciaremos la placa pulsando el botón rst, se iluminará de color azul la placa y lo detectará el ordenador para poder insertar los ficheros correctamente.
 ## ⚠ POSIBLES FALLOS ⚠
-- EN CASO DE NO APARECER EN EL ADMINISTRADOR DE DISPOSITIVOS -->
-	- MANTÉN PRESIONADO EL BOTÓN BOOT (O) Y MIENTRAS PRESIONAS EL BOOT, PULSA Y  SUELTA EL OTRO BOTÓN RESET Y YA SUELTA EL BOTÓN BOOT
+- EN CASO DE NO APARECER EN EL ADMINISTRADOR DE DISPOSITIVOS:
+	- MANTÉN PRESIONADO EL BOTÓN BOOT (O), Y MIENTRAS LO PRESIONAS, PULSA Y SUELTA EL OTRO BOTÓN RESET Y POSTERIORMENTE SUELTA EL BOTÓN BOOT
 
 - EN CASO DE QUE APAREZCA EN EL ADMINISTRADOR DE DISPOSITIVOS COMO "Otros dispositivos":
 	-  Instalar drivers de tu sistema operativo de la tarjeta: https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads
 
 - EN CASO DE QUE AL BORRAR  O FLASHEAR APAREZCA EL SIGUIENTE MENSAJE NO PASA NADA, SE EJECUTA CORRECTAMENTE IGUAL:
-	```Error: ESP32-S2FNR2 (revision v0.0) chip was placed into download mode using GPIO0.```
+
+```
+Error: ESP32-S2FNR2 (revision v0.0) chip was placed into download mode using GPIO0.
+esptool.py can not exit the download mode over USB. To run the app, reset the chip manually.
+To suppress this note, set --after option to 'no_reset'.
+```
 
 - INSTALAR EL FICHERO .bin, no .uf2
