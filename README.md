@@ -118,3 +118,10 @@ To suppress this note, set --after option to 'no_reset'.
 ```
 
 - INSTALAR EL FICHERO .bin, no .uf2
+
+# TODO
+- [ ] Add code (to the presentation too)
+- [ ] Add drivers
+- [ ] Python/pip .exe
+- [ ] Esptool.py
+- [ ] Add firmware
