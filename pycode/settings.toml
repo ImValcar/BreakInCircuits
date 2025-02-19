@@ -1,0 +1,7 @@
+id="HackOn2025"
+host="<SERVER_IP>"
+port=<SERVER_PORT>
+ap_name="<AP_SSID>"
+ap_password="<AP_PASSWORD>"
+sleep_onerror=300
+sleep_onreset=10
