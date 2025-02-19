@@ -124,4 +124,4 @@ To suppress this note, set --after option to 'no_reset'.
 - [ ] Add drivers
 - [ ] Python/pip .exe
 - [ ] Esptool.py
-- [+] Add firmware
+- [ ] Add firmware
