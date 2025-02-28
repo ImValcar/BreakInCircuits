@@ -1,14 +1,31 @@
 import socket
 import threading
+import signal
 
 port = 1337 # Puerto en el que se va a establecer el listener
+
+# Comandos implementados
+implemented_commands = ["send <comando>", "exit"]
 
 # Creamos un socket TCP/IP
 server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server_socket.bind(('0.0.0.0', port))
 server_socket.listen(1)
+server_socket.settimeout(1.0)
 
 print(f"Escuchando en 0.0.0.0:{port}")
+connection = None
+
+def handler(signum, frame):
+    print("\nClosing connection and exiting...")
+    if connection:
+        try:
+            connection.sendall(b'\x03\x00\x01\x07')
+            connection.close()
+        except Exception as e:
+            print(f"Error cerrando conexión: {e}")
+    server_socket.close()
+    exit(1)
 
 def strip_message(data):
     return data[4:].decode("utf-8").split(";")
@@ -41,13 +58,28 @@ def send_messages(connection):
                 encoded_message=msg.encode("utf-8")
                 connection.sendall(b'\x02\x00\x00\x00'+encoded_message+b'\xff\xff')
                 continue
+            elif command == "":
+                continue
+            else:
+                print("Command not found please use one of the following:")
+                for command in implemented_commands:
+                    print("    "+command)
+                print("")
         except Exception as e:
             print(f"Error al enviar datos: {e}")
             break
 
+# Controlar CTRL+C
+signal.signal(signal.SIGINT, handler)
+
+print("Esperando conexión...")
 while True:
-    print("Esperando conexión...")
-    connection, client_address = server_socket.accept()
+    try:
+        connection, client_address = server_socket.accept()
+    except socket.timeout:
+        continue 
+    except KeyboardInterrupt:
+        handler(None, None)
     print(f"Conectado a {client_address}")
 
     # Hilos para enviar y recibir al mismo tiempo

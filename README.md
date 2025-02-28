@@ -5,7 +5,7 @@
 
 1º Para tener micropython en el esp32 primeramente deberemos tener python instalado en el ordenador.
 
-	https://www.python.org/downloads/](https://www.python.org/downloads/)
+	[Python downloads](https://www.python.org/downloads/)
 
 2º Instalaremos la herramienta “ESPTOOL” con pip para poder comunicarnos con nuestro esp32 para flashearla e instalar micropython en ella
 
@@ -20,8 +20,8 @@ D:\ESP32> pip install esptool
   ...
 ```
 
-3º Nos descargamos el último archivo que haya salido con extensión .uf2 de Micropython que posteriormente instalaremos en la esp32s2
-	[https://downloads.circuitpython.org/bin/lolin_s2_mini/es/adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin](https://downloads.circuitpython.org/bin/lolin_s2_mini/es/adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin "https://downloads.circuitpython.org/bin/lolin_s2_mini/es/adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin")
+3º Nos descargamos el último archivo que haya salido con extensión .bin de Micropython que posteriormente instalaremos en la esp32s2
+	[adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin](https://downloads.circuitpython.org/bin/lolin_s2_mini/es/adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin)
 
 
 
@@ -31,13 +31,13 @@ D:\ESP32> pip install esptool
 	https://github.com/espressif/esp-win-usb-drivers/releases
 
 2º Pondremos el modo Download en la tarjeta:
-	Mantén presionado el botón BOOT y mientras presionas el BOOT, pulsa y suelta el otro botón RESET y por último, suelta el botón BOOT.
+	Mantén presionado el botón BOOT y mientras presionas el BOOT, pulsa y suelta el otro botón RESET, por último, suelta el botón BOOT.
 
 3º Nos dirigimos a administrador de dispositivos, comprobamos que aparece el esp32 en el puerto COM
 
 	Si aparece en Otros dispositivos con un triángulo amarillo: 
-		- 1º Identifica si es placa china o real de silicon labs
-		- 2º a)  Descarga el CH340 si es china [https://www.wch-ic.com/search?q=CH340&t=downloads]
+		- 1º Identifica si es placa clon o real de silicon labs
+		- 2º a) Descarga el CH340 si es clon [https://www.wch-ic.com/search?q=CH340&t=downloads]
 		- 2º b) Descarga el CP210 si es de silabs [https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads]
 		- 3º Pulsa en administración de dispositivos y actualiza el controlador del esp32 y selecciona el que te hayas instalado.	
 
@@ -52,10 +52,10 @@ usage: esptool [-h]
 ```
 
 
-5º  Borramos lo que haya dentro del ESP32 primeramente: (recuerda que debes poner el puerto que te salga a ti en administración de dispositivos) 
+5º  Borramos lo que haya dentro del ESP32 primeramente: (recuerda sustituir &lt;COM_N&gt; por el puerto que te salga a ti en administración de dispositivos, COM3, COM5...) 
 
 ```
-D:\ESP32> esptool --port COM3 --baud 460800 erase_flash
+D:\ESP32> esptool --port <COM_N> --baud 460800 erase_flash
 
 esptool.py v4.8.1
 Serial port COM3
@@ -118,10 +118,3 @@ To suppress this note, set --after option to 'no_reset'.
 ```
 
 - INSTALAR EL FICHERO .bin, no .uf2
-
-# TODO
-- [ ] Add code (to the presentation too)
-- [ ] Add drivers
-- [ ] Python/pip .exe
-- [ ] Esptool.py
-- [ ] Add firmware
