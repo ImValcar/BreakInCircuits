@@ -2,11 +2,10 @@
 
 
 ## REQUISITOS DE INSTALACIÓN 📖
+1º Para tener micropython en el esp32 primeramente deberemos tener python instalado en el ordenador. 
+[Python downloads](https://www.python.org/downloads/)
 
-1º Para tener micropython en el esp32 primeramente deberemos tener python instalado en el ordenador.
-
-	[Python downloads](https://www.python.org/downloads/)
-
+	
 2º Instalaremos la herramienta “ESPTOOL” con pip para poder comunicarnos con nuestro esp32 para flashearla e instalar micropython en ella
 
 ```
@@ -20,27 +19,66 @@ D:\ESP32> pip install esptool
   ...
 ```
 
-3º Nos descargamos el último archivo que haya salido con extensión .bin de Micropython que posteriormente instalaremos en la esp32s2
+Tambien tenemos la opción de instalar esptool en nuestro OS
+
+
+En el caso de linux:
+```
+$> sudo apt install esptool
+```
+
+
+3º Nos descargamos el último archivo que haya salido con extensión .bin de Micropython que posteriormente instalaremos en la esp32s2.
 	[adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin](https://downloads.circuitpython.org/bin/lolin_s2_mini/es/adafruit-circuitpython-lolin_s2_mini-es-9.2.4.bin)
 
 
 
 ## FLASHEAR LA TARJETA 📸💳
-1º Conectamos la tarjeta al ordenador
 
+1º Conectamos la tarjeta al ordenador, en caso de no detectarla podeis descargar los drivers en el siguiente enlace:
 	https://github.com/espressif/esp-win-usb-drivers/releases
 
 2º Pondremos el modo Download en la tarjeta:
 	Mantén presionado el botón BOOT y mientras presionas el BOOT, pulsa y suelta el otro botón RESET, por último, suelta el botón BOOT.
 
-3º Nos dirigimos a administrador de dispositivos, comprobamos que aparece el esp32 en el puerto COM
+3aº	WINDOWS
+		  Nos dirigimos a administrador de dispositivos, comprobamos que aparece el esp32 en el puerto COM
 
 	Si aparece en Otros dispositivos con un triángulo amarillo: 
 		- 1º Identifica si es placa clon o real de silicon labs
 		- 2º a) Descarga el CH340 si es clon [https://www.wch-ic.com/search?q=CH340&t=downloads]
 		- 2º b) Descarga el CP210 si es de silabs [https://www.silabs.com/developer-tools/usb-to-uart-bridge-vcp-drivers?tab=downloads]
-		- 3º Pulsa en administración de dispositivos y actualiza el controlador del esp32 y selecciona el que te hayas instalado.	
+		- 3º Pulsa en administración de dispositivos y actualiza el controlador del esp32 y selecciona el que te hayas instalado.`
 
+3bº LINUX
+		
+		
+		
+		
+		
+		
+  - 3.1º Identificamos si reconoce la placa en nuestro equipo. Debe aparecer algo como esto:  
+		 
+ ```
+$> lsusb
+
+[...]
+Bus 003 Device 010: ID XXXX Lolin S2 Mini
+[...]
+```
+
+   - 3.2º Identificamos el puerto en el que está, en el ejemplo se encuentra en ttyACM0 como se puede observar: 
+		
+```
+$> sudo dmesg | tail -30
+
+[...]  
+[77573.041149] usb 3-1: Product: S2 Mini
+[77573.041151] usb 3-1: Manufacturer: Lolin
+[77573.041153] usb 3-1: SerialNumber: 0856990F6740
+[77573.049333] cdc_acm 3-1:1.0: ttyACM0: USB ACM device
+[...]
+```
 4º Confirmamos que tenemos esptool en la terminal utilizando:
 	
 ```
@@ -52,10 +90,10 @@ usage: esptool [-h]
 ```
 
 
-5º  Borramos lo que haya dentro del ESP32 primeramente: (recuerda sustituir &lt;COM_N&gt; por el puerto que te salga a ti en administración de dispositivos, COM3, COM5...) 
+5º \[OPCIONAL\] Algo que se puede realizar es eliminar lo que haya dentro del ESP32 primeramente aunque si no habia nada  es probable que de error. En ese caso, no te preocupes: (recuerda sustituir &lt;COM_N&gt; por el puerto que te salga a ti en administración de dispositivos, COM3, COM5,ACM0,ACM1...) 
 
 ```
-D:\ESP32> esptool --port <COM_N> --baud 460800 erase_flash
+D:\ESP32> esptool --chip esp32s2 --port <PORT_COM> --baud 460800 erase_flash
 
 esptool.py v4.8.1
 Serial port COM3
@@ -76,7 +114,7 @@ Chip erase completed successfully in 17.1s
 6º Instalamos el CircuitPython con el archivo que hemos descargado anteriormente junto a el siguiente comando
 
 ```
-D:\ESP32> esptool --port COM3 --baud 460800 write_flash -z 0x0 [la ruta y tu fichero]
+D:\ESP32> esptool --chip esp32s2 --port <PORT_COM> --baud 460800 write_flash -z 0x0 [la ruta y tu fichero]
 
 esptool.py v4.8.1
 Serial port COM3
@@ -102,6 +140,54 @@ Leaving...
 ```
 
 7º Una vez instalado, reiniciaremos la placa pulsando el botón rst, se iluminará de color azul la placa y lo detectará el ordenador para poder insertar los ficheros correctamente.
+
+
+## INTRODUCIR LOS ARCHIVOS Y CORRER 📄🚀
+
+Primero de todo debemos saber que el código se divide en dos carpetas,
+
+	- Donde server es todo lo que utilizaremos para crear el servidor donde recibiremos y mandaremos las instrucciones
+	- Y pycode, lo que corresponde con los archivos que tendremos que introducir al esp32
+
+1º Introducimos los ficheros y carpetas de pycode en los ficheros del ESP32, donde los ficheros principales son el boot.py, el code.py y el settings.toml
+
+
+2º Abrimos el settings.toml y cambiamos los parametros que vienen entre <> por los de nuestra red.
+
+
+3aº En el caso de utilizar el `main.py` simplemente es lanzar el servidor y se pondrá a la escucha en el puerto 1337
+	
+	
+	$> python3 main.py
+
+
+3bº En el caso de utilizar un bot de discord tendremos que abrir el fichero .env que se encuentra en la carpeta y rellenarlo con los siguientes datos:
+
+
+3b.1 - Tendremos que utilizar un token del bot
+		`https://discord.com/developers/applications`
+		<img src="https://github.com/user-attachments/assets/48b5621c-91ae-4d4e-a59b-b64649793625" alt="image" width="1146"   height="273"/>
+
+
+3b.2- Nuestra IP 
+
+
+3b.3 - El id del canal que va a enviar los datos 
+		
+	
+		
+<img width="402" height="504" alt="image" src="https://github.com/user-attachments/assets/146a41ec-9613-4de7-8088-ad309dd65a74" />
+
+
+3b.4- procederemos a instalarnos la lista de requisitos 
+
+
+3b.5 - Una vez hecho todo esto simplemente lanzaremos el bot de discord con 
+
+		
+	$> python3 discord_bot.py
+		
+
 ## ⚠ POSIBLES FALLOS ⚠
 - EN CASO DE NO APARECER EN EL ADMINISTRADOR DE DISPOSITIVOS:
 	- MANTÉN PRESIONADO EL BOTÓN BOOT (O), Y MIENTRAS LO PRESIONAS, PULSA Y SUELTA EL OTRO BOTÓN RESET Y POSTERIORMENTE SUELTA EL BOTÓN BOOT
