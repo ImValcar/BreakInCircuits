@@ -1,6 +1,7 @@
-id="HackOn2025"
+id="HackOn2026"
 host="<SERVER_IP>"
 port=<SERVER_PORT>
+key="<KEY>"
 ap_name="<AP_SSID>"
 ap_password="<AP_PASSWORD>"
 sleep_onerror=300
